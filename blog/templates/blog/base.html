@@ -15,9 +15,9 @@
   <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
 
   {% if title %}
-  <title>Django Blog - {{ title }}</title>
+  <title>TalkitOut - {{ title }}</title>
   {% else %}
-  <title>Django Blog</title>
+  <title>TalkitOut</title>
   {% endif %}
 </head>
 
@@ -27,7 +27,7 @@
       <div class="container">
         <!-- use url tag for the referencing the link otherwise changing the value
             rather than hard coding the routes -->
-        <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Django Blog</a>
+        <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">TalkitOut</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
           aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
