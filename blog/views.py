@@ -2,7 +2,13 @@ from re import template
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import post
-from django.views.generic import ListView,DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView
+)
 # Create your views here.
 # posts = [{
 #     'author': 'asmit',
@@ -38,6 +44,19 @@ class PostListViews(ListView):
     #<app>/<model>_<viewtype>.html
 class PostDetailsView(DetailView):
     model = post
+class PostCreateView(LoginRequiredMixin,CreateView):
+    model = post
+    fields = ['title','content']
+    def form_valid(self,form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class PostUpdateView(LoginRequiredMixin,UpdateView):
+    model = post
+    fields = ['title','content']
+    def form_valid(self,form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 
