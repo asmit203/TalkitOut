@@ -36,9 +36,9 @@ class PostListViews(ListView):
     context_object_name = 'posts'
     ordering = ['-date_posted']
     #<app>/<model>_<viewtype>.html
-class PostDetailViews(ListView):
+class PostDetailsView(DetailView):
     model = post
-    
+
 
 
 def about(request):
