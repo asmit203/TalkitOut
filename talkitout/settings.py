@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,10 @@ EMAIL_HOST = 'smtp.gamil.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'height': 'full', 
+        'width': '100%', 
+    },
+}
