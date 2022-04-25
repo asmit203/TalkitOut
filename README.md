@@ -8,7 +8,7 @@ Install Python</br>
 Check if pip is available by: `pip help`</br>
 install the following packages:</br>
 using `pip install <.>` </br>
-`pip install Django`</br>
+`Django`</br>
 `django-crispy-forms`</br>
 `django-ckeditor`</br>
 After installing these, open terminal and type `python manage.py runserver 8080`  and your server should start at http://localhost:8080
