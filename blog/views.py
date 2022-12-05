@@ -1,7 +1,8 @@
 from re import template
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from .models import post
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
     ListView,
@@ -58,6 +59,25 @@ class UserPostListViews(ListView):
 class PostDetailsView(DetailView):
     model = post
 
+    def get_context_data(self,**kwargs):
+        data = super().get_context_data(**kwargs)
+
+        votes_connected = get_object_or_404(post, id=self.kwargs['pk'])
+        voted = False
+        if votes_connected.votes.filter(id=self.request.user.id).exists():
+            voted = True
+        data['number_of_votes'] = votes_connected.number_of_votes()
+        data['post_is_voted'] = voted
+        return data
+
+def PostVote(request,pk):
+    Post=get_object_or_404(post,id=request.POST.get('post_id'))
+    if Post.votes.filter(id=request.user.id).exists():
+        Post.votes.remove(request.user)
+    else:
+        Post.votes.add(request.user)
+    return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = post
     fields = ['title','content']
@@ -90,12 +110,10 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):  #left 
 def about(request):
     return render(request, 'blog/about.html',{'title':'about'})
 
-def upVotedPosts(request):
-    return render(request,'blog/upvotedposts.html')
 
 class UpVotedPostListViews(ListView):
     model = post
-    template_name = 'blog/home.html'
+    template_name = 'blog/upvotedposts.html'
     context_object_name = 'posts'
     ordering = ['-votes']
     paginate_by = 5
