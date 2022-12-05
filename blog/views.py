@@ -89,3 +89,13 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):  #left 
             return False
 def about(request):
     return render(request, 'blog/about.html',{'title':'about'})
+
+def upVotedPosts(request):
+    return render(request,'blog/upvotedposts.html')
+
+class UpVotedPostListViews(ListView):
+    model = post
+    template_name = 'blog/home.html'
+    context_object_name = 'posts'
+    ordering = ['-votes']
+    paginate_by = 5

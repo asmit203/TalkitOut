@@ -10,6 +10,7 @@ class post(models.Model):
     content = RichTextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    votes=models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
