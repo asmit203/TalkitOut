@@ -78,6 +78,8 @@ def PostVote(request,pk):
         Post.votes.add(request.user)
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
+
+
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = post
     fields = ['title','content']
@@ -117,3 +119,18 @@ class UpVotedPostListViews(ListView):
     context_object_name = 'posts'
     ordering = ['-votes']
     paginate_by = 5
+
+
+def favourite_add(request,id):
+    Post=get_object_or_404(post,id=id)
+    if Post.favourites.filter(id=request.user.id).exists():
+        Post.favourites.remove(request.user)
+
+    else:
+        Post.favourites.add(request.user)
+
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def favourite_list(request):
+    new=post.objects.filter(favourites=request.user)
+    return render(request,'blog/favourites.html',{'new':new})

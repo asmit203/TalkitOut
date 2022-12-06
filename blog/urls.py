@@ -20,5 +20,7 @@ urlpatterns = [
     path('post/<int:pk>/delete/', PostDeleteView.as_view(),name='post-delete'),
     path('about/', views.about,name='blog-about'),
     path('upvoted/',UpVotedPostListViews.as_view(),name='upvoted-posts'),
-    path('post-vote/<int:pk>', views.PostVote, name="post_vote")
+    path('post-vote/<int:pk>', views.PostVote, name="post_vote"),
+    path('fav/<int:id>/',views.favourite_add,name='favourite_add'),
+    path('favourites/',views.favourite_list,name='favourite_list')
 ]
