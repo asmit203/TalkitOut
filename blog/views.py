@@ -1,7 +1,7 @@
 from re import template
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse,HttpResponseRedirect
-from .models import post
+from .models import post,announcements
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
@@ -134,3 +134,13 @@ def favourite_add(request,id):
 def favourite_list(request):
     new=post.objects.filter(favourites=request.user)
     return render(request,'blog/favourites.html',{'new':new})
+def Announce(request):
+    if request.method=='POST':
+        title=request.POST['title']
+        announces=request.POST['announce']
+        announcements.objects.create(title=title,announce=announces)
+    allAnnouncements=announcements.objects.all()
+    
+    user_detail = request.user
+    context={'announcements':allAnnouncements,'user_detail':user_detail}
+    return render(request,'blog/announcement.html',context)

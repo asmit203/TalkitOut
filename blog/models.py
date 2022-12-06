@@ -22,3 +22,8 @@ class post(models.Model):
         return reverse('post-detail',kwargs={'pk':self.pk})
     def number_of_votes(self):
         return self.votes.count()
+class announcements(models.Model):
+    title=models.CharField(max_length=50,default="TITLE")
+    announce=models.TextField(max_length=200)
+    def __str__(self):
+        return self.title
