@@ -12,6 +12,7 @@ from django.views.generic import (
     DeleteView
 )
 from django.contrib.auth.models import User
+from .forms import announcement_form
 '''# Create your views here.
 # posts = [{
 #     'author': 'asmit',
@@ -135,12 +136,28 @@ def favourite_list(request):
     new=post.objects.filter(favourites=request.user)
     return render(request,'blog/favourites.html',{'new':new})
 def Announce(request):
-    if request.method=='POST':
-        title=request.POST['title']
-        announces=request.POST['announce']
-        announcements.objects.create(title=title,announce=announces)
+    form=announcement_form()
+    
     allAnnouncements=announcements.objects.all()
     
     user_detail = request.user
-    context={'announcements':allAnnouncements,'user_detail':user_detail}
+    context={'announcements':allAnnouncements,'user_detail':user_detail,'form':form}
+
+    if request.method == "POST":
+        # title=request.POST['title']
+        # announces=request.POST['announce']
+        # announcements.objects.create(title=title,announce=announces)
+        # allAnnouncements=announcements.objects.all()
+    
+        # user_detail = request.user
+        # context={'announcements':allAnnouncements,'user_detail':user_detail,'form':form}
+        form=announcement_form(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request,'blog/announcement.html',context)
     return render(request,'blog/announcement.html',context)
+    
+
+    # if request.method=='POST':
+    #     
+    
