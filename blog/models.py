@@ -14,7 +14,6 @@ class post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     votes=models.ManyToManyField(User,related_name='post_vote')
-    favourites=models.ManyToManyField(User,related_name="favourite",default=None,blank=True)
 
     def __str__(self):
         return self.title
@@ -22,3 +21,8 @@ class post(models.Model):
         return reverse('post-detail',kwargs={'pk':self.pk})
     def number_of_votes(self):
         return self.votes.count()
+class announcements(models.Model):
+    title=models.CharField(max_length=50,default="TITLE")
+    announce=models.TextField(max_length=200)
+    def __str__(self):
+        return self.title

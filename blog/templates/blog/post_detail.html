@@ -31,7 +31,6 @@
   <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to vote this article!</a><br>
 {% endif %}
 <strong class="text-secondary">{{ number_of_votes }} Vote{{ number_of_votes|pluralize }}</strong>
-<a href="{% url 'favourite_add' post.id %}" style="margin-left: 550px;position: relative;top:-60px"><button class="btn btn-info">Save</button></a>
   </div>
 </article>
 {% endblock content %}

@@ -1,0 +1,29 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags%}
+{% block content %}
+{% if user_detail.is_superuser %}
+<div class="container">
+<form method="post" action="/announcements/">
+    {{ form|crispy }}
+    {% csrf_token %}
+    
+<label for="title"> <b>Title:</b>  </label>
+<input type="text" name="title">
+<br>
+<label for="announce"><b>Descripton:</b></label>
+<input type="text" name="announce">
+<br>
+<button type="submit" >Submit</button>
+</form>
+</div>
+{% endif %}
+<div class="container">
+
+{% for announces in announcements %}
+    <h2>{{announces.title}}</h2>
+    <li>{{announces.announce}}</li>
+
+{% endfor %}
+</div>
+
+{% endblock content%}
