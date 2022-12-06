@@ -132,5 +132,8 @@ def favourite_add(request,id):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 def favourite_list(request):
-    new=post.objects.filter(favourites=request.user)
-    return render(request,'blog/favourites.html',{'new':new})
+    if(request.user.is_authenticated):
+        new=post.objects.filter(favourites=request.user)
+        return render(request,'blog/favourites.html',{'new':new})
+    else:
+        return render(request,'blog/favourites.html')
