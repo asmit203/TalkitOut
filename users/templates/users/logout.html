@@ -1,12 +1,23 @@
-{% extends "blog/base.html" %}
+{% extends "blog/base.html" %} {% block content %}
+<h2 class="text-center">
+  You are logged out !
+  <div
+    class="bg-image text-center"
+    style="
+      background-image: url('https://t4.ftcdn.net/jpg/00/81/91/53/360_F_81915390_Q9Tflwwu2hDyBeqTJfFOkvZSFLAR03OG.jpg');
+      height: 50vh;
+      background-repeat: no-repeat;
+      background-position: center;
+    "
+  ></div>
+</h2>
 
-{% block content %}
-<h2>You are logged out !</h2>
+<h3>
+  <div class="border-top pt-3">
+    <small class="text-muted"
+      >Login again !<a class="ml-2" href="{% url 'login' %}">Sign In</a>
+    </small>
+  </div>
+</h3>
 
-    <div class="border-top pt-3">
-        <small class="text-muted">Login again !<a class="ml-2" href="{% url 'login' %}">Sign In</a>
-        </small>
-
-    </div>
-
-    {% endblock content %}
+{% endblock content %}
