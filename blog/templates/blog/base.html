@@ -25,7 +25,12 @@
 <body>
   <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-      <div class="container">
+      <div class="container" style="margin-left: 10px;">
+        <div class="logo">
+                    <a href="#" class="navbar-brand mb-0 h1">
+                      <img src="../../static/blog/logo.png" height="40" alt="CoolBrand" style="padding-left: 30px;" >
+                    </a>
+        </div>
         <!-- use url tag for the referencing the link otherwise changing the value
             rather than hard coding the routes -->
         <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">TalkitOut</a>
@@ -65,10 +70,10 @@
         {% endif %}
         {% block content %}{% endblock %}
       </div>
-      <div class="col-md-4">
-        <div class="content-section">
-          <h3>Our Sidebar</h3>
-          <p class='text-muted'>You can put any information here you'd like.
+      <div class="col-md-4 border-radius-5">
+        <div class="content-section border border-dark">
+          <h3 class="text-center">Our Sidebar</h3>
+          <p class='text-muted text-nowrap'>You can put any information here you'd like.
           <ul class="list-group">
             
             <li class="list-group-item list-group-item-light"><a href="{% url 'upvoted-posts' %}">Most Upvoted</a></li>

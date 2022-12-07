@@ -1,15 +1,15 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags%}
 {% block content %}
-<div class="content-section">
+<div class="content-section border-dark">
     <form method="post">
         {% csrf_token %}
         <fieldset class="form groupr">
-            <legend class="border-bottom mb-4">Join Today</legend>
+            <legend class="border-bottom mb-4 text-center">Join Today</legend>
             {{ form|crispy }}
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Sign up</button>
+            <button class="btn btn-dark border-0 rounded-5" type="submit">Sign up</button>
         </div>
     </form>
     <div class="border-top pt-3">
