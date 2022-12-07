@@ -10,6 +10,9 @@
         </div>
         <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
         <p class="article-content">{{ post.content| safe }}</p>
+        {% if post.image %}
+        <img src="{{post.image.url}}">
+        {% endif%}
         <strong class="text-secondary">{{ post.votes.count }} Vote{{ post.votes.count|pluralize }}</strong>
         
     </div>

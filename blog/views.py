@@ -83,14 +83,14 @@ def PostVote(request,pk):
 
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = post
-    fields = ['title','content']
+    fields = ['title','content','image']
     def form_valid(self,form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
 class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = post
-    fields = ['title','content']
+    fields = ['title','content','image']
     def form_valid(self,form):
         form.instance.author = self.request.user
         return super().form_valid(form)
