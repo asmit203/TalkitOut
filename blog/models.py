@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -22,3 +23,9 @@ class post(models.Model):
         return reverse('post-detail',kwargs={'pk':self.pk})
     def number_of_votes(self):
         return self.votes.count()
+class announcements(models.Model):
+    title=models.CharField(max_length=50,default="TITLE")
+    description= RichTextField()
+
+    def __str__(self):
+        return self.title
