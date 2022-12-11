@@ -15,3 +15,5 @@ After installing these, open terminal and type `python manage.py runserver 8080`
 **Also Whenever Cloning This Repo Please Delete all `migration` and `pycache `files**
 
 ### Don't Forget to add a db.sqlite3 for the database to run
+
+## for forceful creation of tables `python manage.py migrate --run-syncdb `
