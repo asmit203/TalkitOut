@@ -1,0 +1,39 @@
+{% extends 'stream/base.html'%}
+{% block content %}
+    <div>
+        {% for item in videos %}
+        <div style="margin-top: 30px;margin-bottom: 20px;margin-right: 15px;margin-left: 10px;">
+            {% comment %} <h3>File belonging to {{ item.streamer.username }}</h4> {% endcomment %}
+            <h4><a href="{% url 'stream:video-detail' item.id %}">{{ item.title }}</a></h1>
+            <h12>{{ item.upload_date}}</h12>
+            <p>{{ item.description}}</p>
+            {% comment %} <video controls>
+                <source src="{{ item.video.url }}" type="video/mp4">
+            </video> {% endcomment %}
+            <input type="text" id="linkInput" value={{ item.video.url }} readonly>
+            {% comment %} copy the link section {% endcomment %}
+            <br>    
+            <br>    
+            {% comment %} <h12 id="myInput">{{ item.video.url }}</h12> {% endcomment %}
+            <button class="btn btn-outline-info" onclick="copyLink()" id="copyButton">Copy Link</button>
+            <a class="btn btn-outline-info" href="{{ item.video.url }}">Download</a>
+            <script>
+                function copyLink() {
+                    // Get the input element
+                    var linkInput = document.getElementById("linkInput");
+        
+                    // Select the text in the input
+                    linkInput.select();
+                    linkInput.setSelectionRange(0, 99999); // For mobile devices
+        
+                    // Copy the selected text
+                    document.execCommand("copy");
+        
+                    // Optional: Provide user feedback (you can use a tooltip or any other method)
+                    alert("Link copied to clipboard: " + linkInput.value);
+                }
+            </script>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

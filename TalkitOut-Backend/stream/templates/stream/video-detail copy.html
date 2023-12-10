@@ -1,0 +1,56 @@
+{% extends 'stream/base.html' %}
+{% block content %}
+    <div>
+        <img class="article-img" style="border-radius: 10%;" height="100" width="100" src="{{ object.streamer.profile.image.url }}">
+        <h12>{{ object.streamer.username }}</h12>
+    </div>
+    <div>
+        <h1>{{ object.title }}</h1>
+        <h12>The File was uploaded on {{ object.upload_date }}</h12>
+        <p>{{ object.description}}</p>
+        {% if object.streamer == user %}
+            <div>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'stream:video-update' object.id %}">Update</a>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'stream:video-delete' object.id %}">Delete</a>
+            </div>
+        {% endif %}
+        <video height="400" width="720" controls>
+            <source src="{{ object.video.url }}" type="video/mp4">
+        </video>
+        </br>
+            <input type="text" id="myInput" name="Link" value="{{ request.get_full_path }}" readonly >
+            </br></br>
+            <button class="btn btn-outline-info btn-md" href="{{ object.video.url }}" download>Download</button>
+            <button class="btn btn-outline-info btn-md" onclick="myFunction()">Copy Link</button>
+        
+    </div>
+    <script>
+        function myFunction() {
+            // Get the text field
+            var copyText = document.getElementById("myInput");
+          
+            // Select the text field
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+          
+             // Copy the text inside the text field
+            navigator.clipboard.writeText(copyText.value);
+          
+            // Alert the copied text
+            alert("Copied the text: " + copyText.value);
+          }
+          function updateInput() {
+            // Your dynamic logic to generate the value
+            var dynamicValue = document.getElementById("myInput").value;
+
+            // Set the size of the input based on the length of the text
+            document.getElementById("myInput").size = dynamicValue.length;
+        }
+
+        // Call the function initially
+        updateInput();
+
+        // Set up a timer to update the value at regular intervals (e.g., every second)
+        setInterval(updateInput, 1000);
+    </script>
+{% endblock content %}
