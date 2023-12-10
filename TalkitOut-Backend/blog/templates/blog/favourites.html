@@ -34,3 +34,82 @@
     {% endif %}
 {% endif %}
 {% endblock content%}
+
+{% block friend_list %}
+<div class="content-section">
+    <h3>Friends</h3>
+    <p>Checkout your friends and continue your conversations.</p>
+    <ul class="list-group">
+        {% for friend in friends %}
+            {% with request.user.username as current_user %}
+                {% if friend.friend.username < current_user %}
+                    {% with room_name=friend.friend.username|add:"_"|add:current_user %}
+                        <li class="list-group-item list-group-item-light">
+                            <a href="{% url 'room' room_name %}">{{ friend.friend.username }}</a> - Last Seen: 
+                            {% for lastseen in friends_lastseen %}
+                                {% if lastseen.user__username == friend.friend.username %}
+                                    {{ lastseen.lastseen }}
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                    {% endwith %}
+                {% else %}
+                    {% with room_name=current_user|add:"_"|add:friend.friend.username %}
+                        <li class="list-group-item list-group-item-light">
+                            <a href="{% url 'room' room_name %}">{{ friend.friend.username }}</a> - Last Seen: 
+                            {% for lastseen in friends_lastseen %}
+                                {% if lastseen.user__username == friend.friend.username %}
+                                    {{ lastseen.lastseen }}
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                    {% endwith %}
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+    </ul>
+</div>
+{% endblock friend_list %}
+
+{% block group_list %}
+<div class="content-section">
+    <h3>Your Groups</h3>
+    <p>Chat with your friends at once.</p>
+    <div class="text-center">
+        <a href="{% url 'create_group' %}">Create Group</a>
+    </div>
+    <ul class="list-group">
+        {% for group in groups %}
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'room' group.name %}">{{ group.name}}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock group_list %}
+
+{% block other_list %}
+<div class="content-section">
+    <h3>Add Friends</h3>
+    <p>Make new friends and start new conversations.</p>
+    <ul class="list-group">
+        {% for other in others_list %}
+            {% with request.user.username as current_user %}
+                {% if other.username < current_user %}
+                    {% with room_name=other.username|add:"_"|add:current_user %}
+                        <li class="list-group-item list-group-item-light">
+                            <a href="{% url 'room' room_name %}">{{ other.username }}</a>
+                        </li>
+                    {% endwith %}
+                {% else %}
+                    {% with room_name=current_user|add:"_"|add:other.username %}
+                        <li class="list-group-item list-group-item-light">
+                            <a href="{% url 'add_friend' other.username %}">{{ other.username }}</a>
+                        </li>
+                    {% endwith %}
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+    </ul>
+</div>
+{% endblock other_list %}

@@ -13,7 +13,8 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
-
+  <link href='https://unpkg.com/css.gg@2.0.0/icons/css/dark-mode.css' rel='stylesheet'>
+  <link href='https://unpkg.com/css.gg@2.0.0/icons/css/sun.css' rel='stylesheet'>
   {% if title %}
   <title>TalkitOut - {{ title }}</title>
   {% else %}
@@ -38,17 +39,23 @@
             <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
             <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
             <a class="nav-item nav-link" href="{% url 'favourite_list' %}">Favourites</a>
+            {% if user.is_authenticated %}
+              <a class="nav-item nav-link" href="{% url 'stream:user-videos' user.username %}">File Transfer</a>
+            {% endif %}
+            {% comment %} <a class="nav-item nav-link" href="{% url 'stream' %}">File Transfer</a> {% endcomment %}
           </div>
           <!-- Navbar Right Side -->
           <div class="navbar-nav">
             {% if user.is_authenticated %}
-            <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
-            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+              <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
+              <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+              <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+              <a class="nav-item nav-link" href=""><i class="gg-sun"></i></i></a>
             {% else %}
-            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-            <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-            <!-- <a class="nav-item nav-link" href="/admin">ADMIN</a> -->
+              <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+              <a class="nav-item nav-link" href=""><i class="gg-sun"></i></i></a>
+              <!-- <a class="nav-item nav-link" href="/admin">ADMIN</a> -->
             {% endif %}
           </div>
         </div>
@@ -58,11 +65,11 @@
   <main role="main" class="container">
     <div class="row">
       <div class="col-md-8">
-        {% if messages %}
+        {% comment %} {% if messages %}
         {%for message in messages %}
-          <div class="alert alert-{{message.tags}}">{{message}}</div>
+          <div class="alert alert-{{message_warning.tags}}">{{message_warnings}}</div>
         {% endfor%}
-        {% endif %}
+        {% endif %} {% endcomment %}
         {% block content %}{% endblock %}
       </div>
       <div class="col-md-4">
@@ -70,16 +77,35 @@
           <h3>Our Sidebar</h3>
           <p class='text-muted'>You can put any information here you'd like.
           <ul class="list-group">
-            
-            <li class="list-group-item list-group-item-light"><a href="{% url 'upvoted-posts' %}">Most Upvoted</a></li>
-            <a href="{% url 'announce' %}"><li class="list-group-item list-group-item-light">Announcements</li></a>
-            <li class="list-group-item list-group-item-light"><a href="">Calendars</a></li>
-            <li class="list-group-item list-group-item-light"><a href="">etc</a></li>
+            {% if user.is_authenticated %}
+              <li class="list-group-item list-group-item-light"><a href="{% url 'upvoted-posts' %}">Most Upvoted</a></li>
+              <li class="list-group-item list-group-item-light"><a href="{% url 'announce' %}">Announcements</li></a>
+            {% else %}
+              <li class="list-group-item list-group-item-light"><a>Most Upvoted</a></li>
+              <li class="list-group-item list-group-item-light"><a>Announcements</li></a>
+            {% comment %} <li class="list-group-item list-group-item-light"><a href="">Calendars</a></li> {% endcomment %}
+            {% comment %} <li class="list-group-item list-group-item-light"><a href="">etc</a></li> {% endcomment %}
+            {% endif %}
           </ul>
           </p>
         </div>
+      {% comment %} </div>
+      <div class="col-md-4"> {% endcomment %}
+
+          {% block friend_list %}
+          
+          {% endblock %}
+
+          {% block group_list %}
+
+          {% endblock %}
+
+          {% block other_list %}
+
+          {% endblock %}
+
+
       </div>
-    </div>
   </main>
 
   <!-- Optional JavaScript -->
@@ -93,6 +119,33 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+  <script>
+    const swapBtn = document.querySelector('#swap-btn')
+    const container = document.querySelector('#container')
+    const icons = document.querySelector('#icons')
+
+    // get data stored in localStorage and set up app
+    let dark = JSON.parse(localStorage.getItem('animated-icons-darkmode')) || false
+    if (dark) {
+      container.classList.add('dark')
+      swapBtn.textContent = 'Switch to Light Mode'
+      icons.style.setProperty('--rotation', 180)
+    }
+
+    // Event listener on button
+    swapBtn.addEventListener('click', () => {
+      container.classList.toggle('dark')
+      const rotation = parseInt(getComputedStyle(icons).getPropertyValue('--rotation'))
+      icons.style.setProperty('--rotation', rotation - 180)
+      dark = !dark
+      if (dark) {
+        swapBtn.textContent = 'Switch to Light Mode'
+      } else {
+        swapBtn.textContent = 'Switch to Dark Mode'
+      }
+      localStorage.setItem('animated-icons-darkmode', JSON.stringify(dark))
+    })
+  </script>
 </body>
 
 </html>

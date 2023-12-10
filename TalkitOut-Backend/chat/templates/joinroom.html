@@ -1,0 +1,23 @@
+{% extends "blog/base.html" %}
+    {% block content %}
+<body>
+  <div class="container">
+    <div class="login form">
+      <header>Join Room</header>
+      <form action="{% url 'join_room' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Enter room ID" name="roomID">
+        <input type="submit" class="button" value="Join">
+        <center>
+          {% if success %}
+          <p style="color: green;"><b>{{ success }}</b></p>
+          {% endif %}
+          {% if error %}
+          <p style="color: red;">{{ error }}</p>
+          {% endif %}
+        </center>
+      </form>
+    </div>
+  </div>
+</body>
+{% endblock content%}
