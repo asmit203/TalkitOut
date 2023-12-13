@@ -1,0 +1,12 @@
+body {
+  background: #343434;
+  color: white;
+}
+
+.content-section {
+  background: #000000;
+  padding: 10px 20px;
+  border: 1px solid #454545;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}

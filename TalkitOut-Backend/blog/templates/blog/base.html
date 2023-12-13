@@ -13,8 +13,11 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+  <link rel="stylesheet" disabled="true" id="dark-mode-stylesheet" type="text/css" href="{% static 'blog/dark.css' %}">
+
   <link href='https://unpkg.com/css.gg@2.0.0/icons/css/dark-mode.css' rel='stylesheet'>
   <link href='https://unpkg.com/css.gg@2.0.0/icons/css/sun.css' rel='stylesheet'>
+  <link href='https://unpkg.com/css.gg@2.0.0/icons/css/moon.css' rel='stylesheet'>
   {% if title %}
   <title>TalkitOut - {{ title }}</title>
   {% else %}
@@ -52,11 +55,11 @@
               <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
               <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
               <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-              <a class="nav-item nav-link" href=""><i class="gg-sun"></i></i></a>
+              <a class="nav-item nav-link theme-toggle" href="#"><i class="gg-sun"></i><i class="gg-moon" style="display: none;"></i></a>
             {% else %}
               <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
               <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-              <a class="nav-item nav-link" href=""><i class="gg-sun"></i></i></a>
+              <a class="nav-item nav-link theme-toggle" href="#"><i class="gg-sun"></i><i class="gg-moon" style="display: none;"></i></a>
               <!-- <a class="nav-item nav-link" href="/admin">ADMIN</a> -->
             {% endif %}
           </div>
@@ -121,32 +124,51 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+    
   <script>
-    const swapBtn = document.querySelector('#swap-btn')
-    const container = document.querySelector('#container')
-    const icons = document.querySelector('#icons')
+    function toggleTheme() {
+        console.log("OK")
+        document.getElementById("dark-mode-stylesheet").disabled = (localStorage.getItem("theme") === "light");
+        // changing the icon inside the theme toggle button
+        if (localStorage.getItem("theme") === "dark") {
+          document.querySelector(".theme-toggle .gg-sun").style.display =
+            "none";
+          document.querySelector(".theme-toggle .gg-moon").style.display =
+            "inline-block";
+        } else {
+          document.querySelector(".theme-toggle .gg-sun").style.display =
+            "inline-block";
+          document.querySelector(".theme-toggle .gg-moon").style.display =
+            "none";
+        }
+  }
 
-    // get data stored in localStorage and set up app
-    let dark = JSON.parse(localStorage.getItem('animated-icons-darkmode')) || false
-    if (dark) {
-      container.classList.add('dark')
-      swapBtn.textContent = 'Switch to Light Mode'
-      icons.style.setProperty('--rotation', 180)
+  if (!localStorage.getItem("theme")) {
+    // if theme is not already set on localstorage
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      // dark mode preferred by user as per os settings
+      localStorage.setItem("theme", "dark");
+    } else {
+      localStorage.setItem("theme", "light");
     }
+  }
 
-    // Event listener on button
-    swapBtn.addEventListener('click', () => {
-      container.classList.toggle('dark')
-      const rotation = parseInt(getComputedStyle(icons).getPropertyValue('--rotation'))
-      icons.style.setProperty('--rotation', rotation - 180)
-      dark = !dark
-      if (dark) {
-        swapBtn.textContent = 'Switch to Light Mode'
-      } else {
-        swapBtn.textContent = 'Switch to Dark Mode'
-      }
-      localStorage.setItem('animated-icons-darkmode', JSON.stringify(dark))
-    })
+  document.querySelector(".theme-toggle").addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.setItem(
+      "theme",
+      localStorage.getItem("theme") === "light" ? "dark" : "light"
+    );
+    toggleTheme();
+  });
+  window.onload = ()=>{
+    if(localStorage.getItem("theme")=="dark"){
+      toggleTheme();
+    }
+  }
   </script>
 </body>
 
