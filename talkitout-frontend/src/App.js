@@ -1,8 +1,12 @@
+// Importing the logo image from the 'logo.svg' file
 import logo from './logo.svg';
+// Importing styles from the 'App.css' file
 import './App.css';
 
+// Functional component for the main App
 function App() {
   return (
+    // Main container div with class 'App'
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -22,4 +26,5 @@ function App() {
   );
 }
 
+// Exporting the App component as the default export of the module
 export default App;
