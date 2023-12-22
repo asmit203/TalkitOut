@@ -21,8 +21,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from users import views as user_views
+from blog.views import home
+from django.shortcuts import redirect
 
 urlpatterns = [
+    path("", lambda request: redirect(f"http://localhost:3000"), name="blog-home"),
     path("admin/", admin.site.urls),
     # path('djrichtextfield/', include('djrichtextfield.urls')),
     path("register/", user_views.register, name="register"),
@@ -63,7 +66,7 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    path("", include("blog.urls")),
+    path("api/", include("blog.urls")),
     path("chat/", include("chat.urls")),
     path("stream/", include("stream.urls")),
     path("whiteboardcollab/", include("whiteboardcollab.urls")),
