@@ -237,7 +237,11 @@
     <ul class="list-group">
         {% for group in groups %}
             <li class="list-group-item list-group-item-light">
-                <a href="{% url 'room' group.name %}">{{ group.name}}</a>
+                {% for gr_name,gr_room_name in group_roomnames.items %}
+                    {% if gr_name == group.name %}
+                        <a href="{% url 'room' gr_room_name %}">{{ group.name}}</a>
+                        {% endif %}
+                    {% endfor %}      
             </li>
         {% endfor %}
     </ul>

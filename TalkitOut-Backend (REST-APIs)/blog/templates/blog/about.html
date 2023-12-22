@@ -46,7 +46,10 @@
     <h3>Your Groups</h3>
     <p>Chat with your friends at once.</p>
     <div class="text-center">
-        <a href="{% url 'create_group' %}">Create Group</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'create_group' %}">Create Group</a>
+        {% endif %}
+        
     </div>
     <ul class="list-group">
         {% for group in groups %}
@@ -83,3 +86,4 @@
     </ul>
 </div>
 {% endblock other_list %}
+    

@@ -266,6 +266,11 @@ def getOthersRoomNames(current_user, others):
             )
     return others_roomnames
 
+def getGroupRoomNames(groups):
+    group_roomnames = {}
+    for group in groups:
+        group_roomnames[group.name]=urllib.parse.quote(base64.b64encode(group.name.encode('ascii')))
+    return group_roomnames
 
 @login_required(login_url="login")
 def room(request, room_name):
@@ -300,6 +305,7 @@ def room(request, room_name):
         context["others_list"] = others
         context["others_roomname"] = getOthersRoomNames(current_user, others)
         context["groups"] = groups  # Add groups to the context
+        context["group_roomnames"]= getGroupRoomNames(groups)
         friends_lastseen = Profile.objects.filter(
             user__in=friends.values_list("friend", flat=True)
         ).values("user__username", "lastseen")

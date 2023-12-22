@@ -29,7 +29,7 @@ const Header = ({ user, isAuthenticated }) => {
               </Link>
               <Link
                 className="nav-item nav-link"
-                to="http://localhost:8000/api/about"
+                to="/about"
               >
                 About
               </Link>

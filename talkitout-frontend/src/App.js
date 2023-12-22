@@ -6,6 +6,7 @@ import { AnnouncementsPage } from "./blog/announcement";
 import { DeletePostForm } from "./blog/post_confirm_delete";
 import { UserPosts } from "./blog/user_posts";
 import { UpvotedPosts } from "./blog/upvotedposts";
+import { AboutPage } from "./blog/about";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route path="/announcements/" element={<AnnouncementsPage />} />
           <Route path="/user/:username" element={<UserPosts />} />
           <Route path="/upvoted/" element={<UpvotedPosts />} />
+          <Route path="/about/" element={<AboutPage />} />
+
 
           <Route path="*" />
         </Routes>
