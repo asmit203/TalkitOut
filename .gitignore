@@ -159,11 +159,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-*.mp4
-*.pdf
-*.txt
-*.csv
-*.png
-*.jpg
-media
+node_modules/
+
 db.*

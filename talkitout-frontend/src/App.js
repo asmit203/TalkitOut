@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { HomePage } from "./blog/home";
+import { PostDetailPage } from "./blog/post_detail";
+import { FavouritesPage } from "./blog/favourites";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AnnouncementsPage } from "./blog/announcement";
+import { DeletePostForm } from "./blog/post_confirm_delete";
+import { UserPosts } from "./blog/user_posts";
+import { UpvotedPosts } from "./blog/upvotedposts";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/post/:id" element={<PostDetailPage />} />
+          <Route path="/post/:id/delete/" element={<DeletePostForm />} />
+
+          <Route path="/favourites/" element={<FavouritesPage />} />
+          <Route path="/announcements/" element={<AnnouncementsPage />} />
+          <Route path="/user/:username" element={<UserPosts />} />
+          <Route path="/upvoted/" element={<UpvotedPosts />} />
+
+          <Route path="*" />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
