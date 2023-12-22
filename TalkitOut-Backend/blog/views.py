@@ -166,10 +166,11 @@ class PostDeleteView(
 
 
 def about(request):
-    request.user.profile.lastseen = timezone.now()
-    request.user.profile.save()
+    
     context = {"title": "about"}
     if request.user.is_authenticated:
+        request.user.profile.lastseen = timezone.now()
+        request.user.profile.save()
         request.user.profile.lastseen = timezone.now()
         request.user.profile.save()
         current_user = request.user
