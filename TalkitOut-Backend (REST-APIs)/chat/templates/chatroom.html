@@ -50,7 +50,7 @@
             <div class="row d-flex justify-content-center">
                 <div class="col">
                     <div class="form-group d-flex">
-                        <label for="exampleFormControlTextarea1" class="h4 pt-5">{{room_name}}</label>
+                        <label for="exampleFormControlTextarea1" class="h4 pt-5">{{currentChatFriend}}</label>
                         {% comment %} <a class="btn btn-outline-info" href="{% url 'meeting' %}" target="_blank" style="margin-left:515px;">Video Call / Call</a> {% endcomment %}
                         <a class="btn btn-outline-info ml-auto align-self-end" href="{% url 'meeting' %}" target="_blank">Video Call / Call</a>
                             {% comment %} <a style="text-align: left;"class="btn btn-outline-info" href="{% url 'meeting' %}" target="_blank">Video Call / Call</a> {% endcomment %}
@@ -206,30 +206,21 @@
     <p>Checkout your friends and continue your conversations.</p>
     <ul class="list-group">
         {% for friend in friends %}
-            {% with request.user.username as current_user %}
-                {% if friend.friend.username < current_user %}
-                    {% with room_name=friend.friend.username|add:"_"|add:current_user %}
+            {% with request.user.username as current_user %}       
+                {% for fr_name,fr_room_name in friends_roomname.items %}
+                    {% if fr_name == friend.friend.username %}
                         <li class="list-group-item list-group-item-light">
-                            <a href="{% url 'room' room_name %}">{{ friend.friend.username }}</a> - Last Seen: 
+                            
+                        <a href="{% url 'room' fr_room_name %}">{{ friend.friend.username }}</a> - Last Seen: 
+                           
                             {% for lastseen in friends_lastseen %}
                                 {% if lastseen.user__username == friend.friend.username %}
                                     {{ lastseen.lastseen }}
                                 {% endif %}
                             {% endfor %}
                         </li>
-                    {% endwith %}
-                {% else %}
-                    {% with room_name=current_user|add:"_"|add:friend.friend.username %}
-                        <li class="list-group-item list-group-item-light">
-                            <a href="{% url 'room' room_name %}">{{ friend.friend.username }}</a> - Last Seen: 
-                            {% for lastseen in friends_lastseen %}
-                                {% if lastseen.user__username == friend.friend.username %}
-                                    {{ lastseen.lastseen }}
-                                {% endif %}
-                            {% endfor %}
-                        </li>
-                    {% endwith %}
-                {% endif %}
+                    {% endif %}
+                {% endfor %}               
             {% endwith %}
         {% endfor %}
     </ul>
@@ -246,7 +237,11 @@
     <ul class="list-group">
         {% for group in groups %}
             <li class="list-group-item list-group-item-light">
-                <a href="{% url 'room' group.name %}">{{ group.name}}</a>
+                {% for gr_name,gr_room_name in group_roomnames.items %}
+                    {% if gr_name == group.name %}
+                        <a href="{% url 'room' gr_room_name %}">{{ group.name}}</a>
+                        {% endif %}
+                    {% endfor %}      
             </li>
         {% endfor %}
     </ul>
@@ -260,19 +255,11 @@
     <ul class="list-group">
         {% for other in others_list %}
             {% with request.user.username as current_user %}
-                {% if other.username < current_user %}
-                    {% with room_name=other.username|add:"_"|add:current_user %}
-                        <li class="list-group-item list-group-item-light">
-                            <a href="{% url 'room' room_name %}">{{ other.username }}</a>
-                        </li>
-                    {% endwith %}
-                {% else %}
-                    {% with room_name=current_user|add:"_"|add:other.username %}
+                
                         <li class="list-group-item list-group-item-light">
                             <a href="{% url 'add_friend' other.username %}">{{ other.username }}</a>
                         </li>
-                    {% endwith %}
-                {% endif %}
+                  
             {% endwith %}
         {% endfor %}
     </ul>

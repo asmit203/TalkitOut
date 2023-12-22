@@ -36,6 +36,8 @@ ALLOWED_HOSTS = ["*"]  #!for allowing all the incoming connections
 # Application definition
 
 INSTALLED_APPS = [
+    "rest_framework.authtoken",
+    "corsheaders",
     "daphne",
     "whiteboardcollab",
     "blog.apps.BlogConfig",
@@ -55,6 +57,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -63,7 +66,21 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    # Add other allowed origins as needed
+]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://localhost:8000/"]
+ALLOWED_HOSTS = [
+    "*",
+]
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+]
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = "talkitout.urls"
 
 TEMPLATES = [
@@ -150,7 +167,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-LOGIN_REDIRECT_URL = "blog-home"
+LOGIN_REDIRECT_URL = "http://localhost:3000"
 LOGIN_URL = "login"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
