@@ -160,5 +160,11 @@ cython_debug/
 #.idea/
 
 node_modules/
-
+*.mp4
+*.pdf
+*.txt
+*.csv
+*.png
+*.jpg
+media
 db.*
