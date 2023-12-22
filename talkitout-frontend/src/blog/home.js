@@ -173,7 +173,7 @@ const GroupList = ({ groups, isAuthenticated }) => {
             key={group.name}
             className="list-group-item list-group-item-light"
           >
-            <a href={"http://localhost:8000/chat/" + group.name}>
+            <a href={"http://localhost:8000/chat/" + encodeURIComponent(btoa(group.name))}>
               {group.name}
             </a>
           </li>

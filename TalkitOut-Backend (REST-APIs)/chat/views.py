@@ -2,6 +2,8 @@
 # from django.contrib.auth.models import User
 from blog.models import Friend, Group
 import hashlib
+import urllib
+import base64
 
 # from .models import ChatMessage
 
@@ -286,8 +288,10 @@ def room(request, room_name):
         context["currentChatFriend"] = getFriendFromHash(
             room_name, current_user, friends
         )
+        context["isGroup"] = False
         if(context["currentChatFriend"]==None):
-            context["currentChatFriend"] = room_name
+            context["currentChatFriend"] = urllib.parse.unquote(base64.b64decode(room_name))
+
         others = User.objects.exclude(pk=current_user.id).exclude(pk__in=friends)
         groups = Group.objects.filter(
             members=current_user
