@@ -290,7 +290,7 @@ def room(request, room_name):
         )
         context["isGroup"] = False
         if(context["currentChatFriend"]==None):
-            context["currentChatFriend"] = urllib.parse.unquote(base64.b64decode(room_name))
+            context["currentChatFriend"] = str(base64.b64decode(urllib.parse.unquote(room_name)))[2:-1]
 
         others = User.objects.exclude(pk=current_user.id).exclude(pk__in=friends)
         groups = Group.objects.filter(
