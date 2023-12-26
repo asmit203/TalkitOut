@@ -1,12 +1,13 @@
 import { HomePage } from "./blog/home";
 import { PostDetailPage } from "./blog/post_detail";
 import { FavouritesPage } from "./blog/favourites";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Form, Route, Routes } from "react-router-dom";
 import { AnnouncementsPage } from "./blog/announcement";
 import { DeletePostForm } from "./blog/post_confirm_delete";
 import { UserPosts } from "./blog/user_posts";
 import { UpvotedPosts } from "./blog/upvotedposts";
 import { AboutPage } from "./blog/about";
+import NotFound from "./404-page";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Route path="/about/" element={<AboutPage />} />
 
 
-          <Route path="*" />
+          <Route path="*" element={<NotFound/>}/>
         </Routes>
       </BrowserRouter>
     </>
