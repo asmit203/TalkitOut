@@ -10,3 +10,9 @@ body {
   border-radius: 3px;
   margin-bottom: 20px;
 }
+.file {
+  background-color: #454545;
+}
+.fileUploadForm {
+  background-color: #454545;
+}
