@@ -27,6 +27,10 @@ const Post = ({ post }) => (
           className="rounded-circle article-img"
           src={post.author.profile.image}
           alt="Author"
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src = "/default.jpg";
+          }}
         />
         <a className="mr-2" href={`/user/${post.author.username}`}>
           {post.author.username}
@@ -162,9 +166,9 @@ const GroupList = ({ groups, isAuthenticated }) => {
     <div className="content-section">
       <h3>Your Groups</h3>
       <p>Chat with your friends at once.</p>
-      <div className="text-center">
+      <div className="createGroupButton">
         {isAuthenticated && (
-          <a href="http://localhost:8000/api/create_group">Create Group</a>
+          <a href="http://localhost:8000/api/create_group">+ Create Group</a>
         )}
       </div>
       <ul className="list-group">
@@ -173,7 +177,12 @@ const GroupList = ({ groups, isAuthenticated }) => {
             key={group.name}
             className="list-group-item list-group-item-light"
           >
-            <a href={"http://localhost:8000/chat/" + encodeURIComponent(btoa(group.name))}>
+            <a
+              href={
+                "http://localhost:8000/chat/" +
+                encodeURIComponent(btoa(group.name))
+              }
+            >
               {group.name}
             </a>
           </li>

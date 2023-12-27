@@ -21,8 +21,8 @@ h6 {
   color: #ffffff;
 }
 .content-section {
-  background: #000000;
-  border: 1px solid #696969;
+  background: #2b343c;
+  border: 1px solid rgba(128, 128, 128, 0.318);
 }
 .article-title {
   color: #ffffff;
