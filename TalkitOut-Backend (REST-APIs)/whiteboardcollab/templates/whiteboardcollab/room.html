@@ -8,7 +8,6 @@
     <style>
         html,
         body {
-          cursor: crosshair;
             width: 100%;
             height: 100%;
             margin: 0;
@@ -28,6 +27,10 @@
             /* Internet Explorer/Edge */
             user-select: none;
             /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+        }
+        body{
+          cursor: crosshair;
+
         }
         .flexbox {
             display: flex;
@@ -58,12 +61,12 @@
         .color.active{
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.642);
         }
-        .erase{
+        .erase, .erasor{
           object-fit: contain;
         border: 1px solid black;     
       display: grid;
     place-content: center;   }
-        .erase img{
+        .erase img, .erasor img{
           object-fit: contain;
           width: 40px;
           height: 40px;
@@ -109,6 +112,8 @@
   <div class="color red" style="background: #c60038;"></div>
   <div class="color green" style="background: #00a960;"></div>
   <div class="erase"><img src="/media/bin.webp" alt=""></div>
+  <div class="color erasor" style="background-color: white;"><img src="/media/erasor.png" alt=""></div>
+
 </div>
 <div id="inviteButton">Invite Collaborators</div>
 
@@ -335,7 +340,6 @@ drawings = data.drawings
             context.beginPath();
             context.moveTo(x0, y0);
             context.lineTo(x1, y1);
-            context.lineWidth = 2;
             context.stroke();
         }
 
@@ -450,6 +454,13 @@ drawings = data.drawings
             color.classList.add("active");
             // console.log(getComputedStyle(color).backgroundColor)
             context.strokeStyle = getComputedStyle(color).backgroundColor;
+            if(context.strokeStyle == "#ffffff"){
+              context.lineWidth = 50;
+              document.body.style.cursor = "url('/media/erasor.png'), auto";
+            }else{
+              context.lineWidth = 3;
+              document.body.style.cursor = "crosshair";
+            }
           });
         });
         const erase = document.querySelector(".erase");
