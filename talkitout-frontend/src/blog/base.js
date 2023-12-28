@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ThemeToggleButton from "./theme";
 import { FriendsList, GroupList, OtherList } from "./home";
-import { Chatbot } from "./chatbot";
+import { ChatbotWidget } from "./chatbot";
 
 const Header = ({ user, isAuthenticated }) => {
   return (
@@ -42,7 +42,7 @@ const Header = ({ user, isAuthenticated }) => {
               </Link>
               {isAuthenticated && (
                 <Link
-                  className="nav-item nav-link"
+                  className="nav-item nav-link fileTransferLink"
                   to={`http://localhost:8000/stream/user/${user.username}`}
                 >
                   File Transfer
@@ -193,7 +193,7 @@ const Base = ({
           )}
         </div>
       </main>
-      <Chatbot></Chatbot>
+      <ChatbotWidget></ChatbotWidget>
     </>
   );
 };

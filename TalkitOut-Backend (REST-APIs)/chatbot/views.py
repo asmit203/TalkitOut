@@ -5,9 +5,9 @@ from rest_framework import status
 
 @api_view(["POST"])
 def chatbotResponse(request):
-    print("OK")
     if request.method == "POST":
         data = request.data
+        print(data)
         return Response("Hello!", status=status.HTTP_200_OK)
     else:
         return Response(
