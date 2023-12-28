@@ -174,7 +174,7 @@
         function trueWidth() {
             return canvas.clientWidth / scale;
         }
-
+ 
         function redrawCanvas() {
             // set the canvas to the size of the window
             canvas.width = document.body.clientWidth;
@@ -183,9 +183,24 @@
             context.fillStyle = '#fff';
             context.fillRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < drawings.length; i++) {
+              if(drawings[i].type == "line"){
                 const line = drawings[i];
                 context.strokeStyle = line.color;
+                if(context.strokeStyle == "#ffffff"){
+                  context.lineWidth = 50;
+                }else{
+                  context.lineWidth = 3;
+                }
                 drawLine(toScreenX(line.x0), toScreenY(line.y0), toScreenX(line.x1), toScreenY(line.y1));
+              }else if(drawings[i].type == "image"){
+                const imgPasted = drawings[i];
+                var imgTmp = new Image();
+                imgTmp.onload = ()=>{
+                  context.drawImage(imgTmp, toScreenX(imgPasted.x), toScreenY(imgPasted.y), imgPasted.width*scale, imgPasted.height*scale);
+                }
+                imgTmp.src = imgPasted.image;
+
+              }
             }
         }
         redrawCanvas();
@@ -243,7 +258,65 @@ drawings = data.drawings
             return blob;
         }
     }
-     
+    function getBase64Image(img) {
+      // Create an empty canvas element
+      var canvasLocal = document.createElement("canvas");
+      canvasLocal.width = img.width;
+      canvasLocal.height = img.height;
+  
+      // Copy the image contents to the canvas
+      var ctx = canvasLocal.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+  
+      // Get the data-URL formatted image
+      // Firefox supports PNG and JPEG. You could check img.src to
+      // guess the original format, but be aware the using "image/jpg"
+      // will re-encode the image.
+      var dataURL = canvasLocal.toDataURL("image/png");
+  
+      return dataURL;
+  }
+    window.addEventListener("paste", async (e)=>{
+      if (e.clipboardData) {
+        var items = e.clipboardData.items;
+        if (!items) return;
+        
+        //access data directly
+        var is_image = false;
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf("image") !== -1) {
+            //image
+            var blob = items[i].getAsFile();
+            var URLObj = window.URL || window.webkitURL;
+            var source = URLObj.createObjectURL(blob);
+            var pastedImage = new Image();
+            pastedImage.onload = ()=>{
+              context.drawImage(pastedImage, toTrueX(cursorX), toTrueY(cursorY), pastedImage.width*scale, pastedImage.height*scale);
+              drawings.push({
+                type:"image",
+                image:getBase64Image(pastedImage),
+                x:cursorX,
+                y:cursorY,
+                width:pastedImage.width,
+                height:pastedImage.height
+              })
+              const message = {"image":canvas.toDataURL("image/jpeg"),"drawings":drawings};
+
+              whiteboardcollabSocket.send(
+              JSON.stringify({
+                message:message,
+              }))
+            }
+            pastedImage.src = source;
+            is_image = true;
+          }
+        }
+        if(is_image == true){
+          e.preventDefault();
+        }
+      }
+    });
+    
         // mouse functions
         let leftMouseDown = false;
         let middleMouseDown = false;
@@ -254,13 +327,13 @@ drawings = data.drawings
                 leftMouseDown = true;
                 middleMouseDown = false;
             }
-       
+            
             //detect middle click
             if (event && (event.which == 2 || event.button == 4 )) {
                 middleMouseDown = true;
                 leftMouseDown = false;
             }
-
+            
             // update the cursor coordinates
             cursorX = event.pageX;
             cursorY = event.pageY;
@@ -279,6 +352,7 @@ drawings = data.drawings
             if (leftMouseDown) {
                 // add the line to our drawing history
                 drawings.push({
+                  type:"line",
                     x0: prevScaledX,
                     y0: prevScaledY,
                     x1: scaledX,
@@ -463,11 +537,19 @@ drawings = data.drawings
             }
           });
         });
+        colors[0].click()
         const erase = document.querySelector(".erase");
         erase.onclick = ()=>{
           context.fillStyle = '#fff';
             context.fillRect(0, 0, canvas.width, canvas.height);
             drawings = []
+            const message = {"image":canvas.toDataURL("image/jpeg"),"drawings":drawings};
+
+            whiteboardcollabSocket.send(
+            JSON.stringify({
+              message:message,
+            }))
+          
         }
     </script>
    
