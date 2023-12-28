@@ -4,7 +4,11 @@ import "./chatbot.css";
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
-
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -14,14 +18,33 @@ const Chatbot = () => {
 
     const newMessages = [...messages, { text: inputValue, isUser: true }];
     setMessages(newMessages);
-
-    // Simulate a response from the chatbot (you can replace this with an API call)
-    const botResponse = "Hello!";
-    const newBotMessages = [
-      ...newMessages,
-      { text: botResponse, isUser: false },
-    ];
-    setMessages(newBotMessages);
+    var botResponse = "...";
+    try {
+      fetch("chatbot/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+        },
+        body: JSON.stringify({ query: inputValue.trim() }),
+      }).then(async (response) => {
+        if (response.ok) {
+          botResponse = await response.text();
+          botResponse = botResponse.slice(1, -1);
+          // Optionally, you can redirect the user or perform other actions after successful submission.
+        } else {
+          botResponse = "error loading bot response";
+          console.error("Form submission failed");
+        }
+        const newBotMessages = [
+          ...newMessages,
+          { text: botResponse, isUser: false },
+        ];
+        setMessages(newBotMessages);
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
 
     // Clear the input field
     setInputValue("");
