@@ -11,7 +11,11 @@ the install all the dependencies using
 ```bash
 pip install -r requirements.txt
 ```
-then run the server using
+### Run Servers Automatically
+run the `runserver.bat` file to start both the servers automatically
+
+### Run Manually
+run the server manually using
 ```bash
 cd "TalkitOut-Backend (REST-APIs)"
 python manage.py runserver 8000
