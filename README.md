@@ -12,7 +12,7 @@ the install all the dependencies using
 pip install -r requirements.txt
 ```
 ### Run Servers Automatically
-run the `runserver.bat` file to start both the servers automatically
+run the `runserver.bat` or `runserver.sh` file to start both the servers automatically
 
 ### Run Manually
 run the server manually using
