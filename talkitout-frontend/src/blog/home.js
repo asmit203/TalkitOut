@@ -116,6 +116,8 @@ const Pagination = ({ pageObj }) => (
 
 // FriendsList component
 const FriendsList = ({ friends, friendsLastSeen, currentUser }) => {
+  const [loading, setLoading] = useState(true);
+  const [chatrooms, setChatrooms] = useState([]);
   useEffect(() => {
     async function getChatRooms() {
       for (let i = 0; i < friends.length; i++) {
@@ -124,11 +126,27 @@ const FriendsList = ({ friends, friendsLastSeen, currentUser }) => {
             ? currentUser.email + "_" + friends[i].friend.email
             : friends[i].friend.email + "_" + currentUser.email
         );
+        setChatrooms((chatrooms) => [...chatrooms, friends[i].chatroom]);
       }
+      setLoading(false);
     }
     getChatRooms();
+  }, [friends, currentUser, loading]);
+  if (loading) {
+    return (
+      <div className="content-section">
+        <h3>Friends</h3>
+        <p>Checkout your friends and continue your conversations.</p>
+        Loading...
+      </div>
+    );
+  } else {
     console.log(friends);
-  }, [friends, currentUser]);
+    if (friends.length > 0) {
+      console.log(friends[0]["chatroom"]);
+      console.log(chatrooms[0]);
+    }
+  }
   return (
     <div className="content-section">
       <h3>Friends</h3>
