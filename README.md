@@ -30,3 +30,4 @@ this will automatically open localhost:3000 in your default browser
 > - Also Whenever Cloning This Repo Please Delete all `migration` and `pycache `files**
 > - Don't Forget to add a db.sqlite3 for the database to run
 > - for forceful creation of tables `python manage.py migrate --run-syncdb `
+> - Also in the `talkitout-frontend` direcetory update npm packages using `npm install`
