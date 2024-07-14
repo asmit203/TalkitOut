@@ -27,6 +27,11 @@ npm start
 ```
 this will automatically open localhost:3000 in your default browser
 
+start ollama server (in a new terminal) using
+```bash
+ollama run phi3:latest
+```
+
 > - Also Whenever Cloning This Repo Please Delete all `migration` and `pycache `files**
 > - Don't Forget to add a db.sqlite3 for the database to run
 > - for forceful creation of tables `python manage.py migrate --run-syncdb `
