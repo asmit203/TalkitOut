@@ -2,10 +2,10 @@
 {% load crispy_forms_tags%}
 {% block content %}
 <div class="content-section">
-    <form method="post">
+    <form method="post" novalidate>
         {% csrf_token %}
         <fieldset class="form groupr">
-            <legend class="border-bottom mb-4">Blog Post</legend>
+            <legend class="border-bottom mb-4" >Blog Post</legend>
             <!-- {{ form|crispy }} -->
 
             {{ form.media }}
@@ -16,6 +16,10 @@
             <button class="btn btn-outline-info" type="submit">Post</button>
         </div>
     </form>
+    <script src="https://cdn.jsdelivr.net/npm/simplemde@1.11.2/dist/simplemde.min.js"></script>
+    <script>
+        var simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
+    </script>
 
 </div>
 
