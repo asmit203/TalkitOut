@@ -42,7 +42,7 @@ from rest_framework.generics import DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 import hashlib, base64
 import urllib.parse
-
+import requests
 
 def home(request):
     context = {
@@ -159,16 +159,32 @@ def getHash(s):
 def add_friend(request, username):
     request.user.profile.lastseen = timezone.now()
     request.user.profile.save()
-    if request.user.is_authenticated:
-        current_user = request.user
-        new_friend = User.objects.get(username=username)
-        Friend.make_friendship(current_user, new_friend)
-        room_name = getHash(
-            min(current_user.email, new_friend.email)
-            + "_"
-            + max(new_friend.email, current_user.email)
-        )
-        return redirect("room", room_name=room_name)
+    
+    user_id = request.user.id
+    action = "edit_post"
+    resource = "post_45"
+
+    response = requests.post('http://localhost:8000/api/permissions/verify-permission/', json={
+        'user_id': user_id,
+        'action': action,
+        'resource': resource
+    })
+    print(response)
+    permission_data = response.json()
+    if permission_data.get('allowed'):
+        print("permission working fine")
+    else:
+        print("permission denied")
+    # if request.user.is_authenticated:
+    #     current_user = request.user
+    #     new_friend = User.objects.get(username=username)
+    #     Friend.make_friendship(current_user, new_friend)
+    #     room_name = getHash(
+    #         min(current_user.email, new_friend.email)
+    #         + "_"
+    #         + max(new_friend.email, current_user.email)
+    #     )
+    #     return redirect("room", room_name=room_name)
 
 
 # class PostListViews(ListView):

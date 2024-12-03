@@ -4,8 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
-
-
+from .decorators import role_required
 # Create your views here.
 def register(request):
     if request.method == 'POST':
@@ -43,3 +42,12 @@ def profile(request):
     return render(request, 'users/profile.html',context)
 
 
+@role_required(['admin', 'doctor'])
+def patient_records(request):
+    # Only admins and doctors can access this view
+    pass
+
+@role_required(['admin'])
+def admin_panel(request):
+    # Only admins can access this view
+    pass

@@ -66,6 +66,7 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
+    path('api/permissions/', include('permissions.urls')),  # Include the permissions app URLs
     path("api/", include("blog.urls")),
     path("chat/", include("chat.urls")),
     path("stream/", include("stream.urls")),
