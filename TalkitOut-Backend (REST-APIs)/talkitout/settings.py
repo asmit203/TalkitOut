@@ -51,9 +51,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "ckeditor",
     "crispy_bootstrap4",
     "channels",
+    # "ckeditor",
 ]
 
 MIDDLEWARE = [

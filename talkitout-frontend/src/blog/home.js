@@ -27,6 +27,10 @@ const Post = ({ post }) => (
           className="rounded-circle article-img"
           src={post.author.profile.image}
           alt="Author"
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src = "/default.jpg";
+          }}
         />
         <a className="mr-2" href={`/user/${post.author.username}`}>
           {post.author.username}
@@ -112,6 +116,8 @@ const Pagination = ({ pageObj }) => (
 
 // FriendsList component
 const FriendsList = ({ friends, friendsLastSeen, currentUser }) => {
+  const [loading, setLoading] = useState(true);
+  const [chatrooms, setChatrooms] = useState([]);
   useEffect(() => {
     async function getChatRooms() {
       for (let i = 0; i < friends.length; i++) {
@@ -120,11 +126,27 @@ const FriendsList = ({ friends, friendsLastSeen, currentUser }) => {
             ? currentUser.email + "_" + friends[i].friend.email
             : friends[i].friend.email + "_" + currentUser.email
         );
+        setChatrooms((chatrooms) => [...chatrooms, friends[i].chatroom]);
       }
+      setLoading(false);
     }
     getChatRooms();
+  }, [friends, currentUser, loading]);
+  if (loading) {
+    return (
+      <div className="content-section">
+        <h3>Friends</h3>
+        <p>Checkout your friends and continue your conversations.</p>
+        Loading...
+      </div>
+    );
+  } else {
     console.log(friends);
-  }, [friends, currentUser]);
+    if (friends.length > 0) {
+      console.log(friends[0]["chatroom"]);
+      console.log(chatrooms[0]);
+    }
+  }
   return (
     <div className="content-section">
       <h3>Friends</h3>
@@ -162,9 +184,9 @@ const GroupList = ({ groups, isAuthenticated }) => {
     <div className="content-section">
       <h3>Your Groups</h3>
       <p>Chat with your friends at once.</p>
-      <div className="text-center">
+      <div className="createGroupButton">
         {isAuthenticated && (
-          <a href="http://localhost:8000/api/create_group">Create Group</a>
+          <a href="http://localhost:8000/api/create_group">+ Create Group</a>
         )}
       </div>
       <ul className="list-group">
@@ -173,7 +195,12 @@ const GroupList = ({ groups, isAuthenticated }) => {
             key={group.name}
             className="list-group-item list-group-item-light"
           >
-            <a href={"http://localhost:8000/chat/" + encodeURIComponent(btoa(group.name))}>
+            <a
+              href={
+                "http://localhost:8000/chat/" +
+                encodeURIComponent(btoa(group.name))
+              }
+            >
               {group.name}
             </a>
           </li>

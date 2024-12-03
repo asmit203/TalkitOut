@@ -2,9 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
-from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
-from ckeditor.fields import RichTextField
+# from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -27,7 +26,8 @@ from ckeditor.fields import RichTextField
 
 class post(models.Model):
     title = models.CharField(max_length=100)
-    content = RichTextField()
+    # content = RichTextField()
+    content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     votes = models.ManyToManyField(User, related_name="post_vote")
@@ -57,7 +57,8 @@ class Comment(models.Model):
 
 class announcements(models.Model):
     title = models.CharField(max_length=50, default="TITLE")
-    description = RichTextField()
+    description = models.TextField()
+    # description = RichTextField()
 
     def __str__(self):
         return self.title

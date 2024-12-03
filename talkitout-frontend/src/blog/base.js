@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ThemeToggleButton from "./theme";
 import { FriendsList, GroupList, OtherList } from "./home";
+import { ChatbotWidget } from "./chatbot";
 
 const Header = ({ user, isAuthenticated }) => {
   return (
@@ -27,10 +28,7 @@ const Header = ({ user, isAuthenticated }) => {
               <Link className="nav-item nav-link" to="/">
                 Home
               </Link>
-              <Link
-                className="nav-item nav-link"
-                to="/about"
-              >
+              <Link className="nav-item nav-link" to="/about">
                 About
               </Link>
               <Link className="nav-item nav-link" to="/favourites">
@@ -44,7 +42,7 @@ const Header = ({ user, isAuthenticated }) => {
               </Link>
               {isAuthenticated && (
                 <Link
-                  className="nav-item nav-link"
+                  className="nav-item nav-link fileTransferLink"
                   to={`http://localhost:8000/stream/user/${user.username}`}
                 >
                   File Transfer
@@ -114,7 +112,9 @@ const Sidebar = ({ children, isAuthenticated }) => {
                 <Link to="/upvoted">Most Upvoted</Link>
               </li>
               <li className="list-group-item list-group-item-light">
-                <Link to="http://localhost:8000/api/announcements">Announcements</Link>
+                <Link to="http://localhost:8000/api/announcements">
+                  Announcements
+                </Link>
               </li>
             </>
           ) : (
@@ -193,6 +193,7 @@ const Base = ({
           )}
         </div>
       </main>
+      <ChatbotWidget></ChatbotWidget>
     </>
   );
 };

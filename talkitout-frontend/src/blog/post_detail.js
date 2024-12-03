@@ -99,7 +99,7 @@ const PostDetail = ({
       />
       <div className="media-body">
         <div className="article-metadata">
-          <Link to={`user-posts/${post.author.username}`} className="mr-2">
+          <Link to={`/user/${post.author.username}`} className="mr-2">
             {post.author.username}
           </Link>
           <small className="text-muted">

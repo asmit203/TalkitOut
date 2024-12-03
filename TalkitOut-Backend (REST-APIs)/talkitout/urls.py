@@ -70,6 +70,7 @@ urlpatterns = [
     path("chat/", include("chat.urls")),
     path("stream/", include("stream.urls")),
     path("whiteboardcollab/", include("whiteboardcollab.urls")),
+    path("chatbot/", include("chatbot.urls")),
 ]
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
