@@ -1,0 +1,72 @@
+{% extends 'blog/base.html'%}
+{% block content %}
+    <div class="center_journal">
+        <h1>Search </h1>
+    </div>
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="input-group">
+                <div class="input-group-prepend">
+                {% comment %} <span class="input-group-text"></span> {% endcomment %}
+                </div>
+                <input type="text" class="form-control" name="title" style="border-radius:20px;">
+                <button type="submit" class="btn btn-dark" style="margin:5px;">Search</button>
+            </div>
+
+
+        </form>
+    </div>
+    <div>
+        <h3> All the matching Posts </h3>
+        <div>
+            {% for item in posts%}
+            <div class="card" style="width: 40rem; margin: 20px; box-shadow: 12em; border-radius:20px;">
+                <div style="margin: 5px;">
+                    <img class="rounded-circle border-dark" src="{{ item.author.profile.image.url }}" style="border-color: red;" width="30" height="30">
+                    <a class="mr-2" href="http://localhost:3000/user/{{ item.author.username }}/" style="text-align: start;">{{ item.author }}</a>
+                    {% comment %} <a class="mr-2" href="{% url 'stream:user-videos' item.streamer.username %}" style="text-align: start;">{{ item.streamer }}</a> {% endcomment %}
+                    <h12 style="text-align: start;">{{ item.date_posted }}</h12>
+                </div>
+                {% comment %} <video class="card-image-top" controls>
+                    <source src="{{ item.video.url }}" type="video/mp4">
+                </video> {% endcomment %}
+                <div class="card-body">
+                <h5 class="card-title"><a href="{% url 'post-detail' item.id %}"%}>{{ item.title }}</a></h5>
+                <p class="card-text">{{ item.content }}</p>
+                </div>
+                {% comment %} <hr> {% endcomment %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+{% endblock content %}
+
+{% block search_user_list %}
+    <div class='content-section'>
+        <h3> Matching Users </h3>
+        <div>
+            {% for item in users%}
+            <div class="card" style="margin: 20px; box-shadow: 12em; border-radius:25px;">
+                <div style="margin: 20px;">
+                    <img class="rounded-circle border-dark" src="{{ item.profile.image.url }}" style="border-color: red;" width="30" height="30">
+                    
+                    <a class="mr-2" href="{% url 'user-search-util' item.username %}" style="text-align: start;">{{ item.username }}</a>
+                    {% comment %} <a class="mr-2" href="http://localhost:3000/user/{{ item.username }}/" style="text-align: start;">{{ item.username }}</a> {% endcomment %}
+                    {% comment %} <a class="mr-2" href="{% url 'stream:user-videos' item.streamer.username %}" style="text-align: start;">{{ item.streamer }}</a> {% endcomment %}
+                    {% comment %} <h12 style="text-align: start;">{{ item.date_posted }}</h12> {% endcomment %}
+                </div>
+                {% comment %} <video class="card-image-top" controls>
+                    <source src="{{ item.video.url }}" type="video/mp4">
+                </video> {% endcomment %}
+                {% comment %} <div class="card-body">
+                <h5 class="card-title"><a href="{% url 'post-detail' item.id %}"%}>{{ item.title }}</a></h5>
+                <p class="card-text">{{ item.content }}</p>
+                </div> {% endcomment %}
+                {% comment %} <hr> {% endcomment %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock search_user_list %}

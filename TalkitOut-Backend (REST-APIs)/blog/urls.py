@@ -32,11 +32,7 @@ urlpatterns = [
     path("current_user/", views.user, name="current-user"),
     path("user/<str:username>", UserPostListView.as_view(), name="user-posts"),
     path("post/<int:pk>/", PostDetailsAPIView.as_view(), name="post-details-api"),
-    path(
-        "post-detail/<int:pk>/",
-        lambda request, pk: redirect(f"http://localhost:3000/post/{pk}/"),
-        name="post-detail",
-    ),
+    path("post-detail/<int:pk>/", lambda request, pk: redirect(f"http://localhost:3000/post/{pk}/"),name="post-detail",),
     path("post/new/", PostCreateView.as_view(), name="post-create"),
     path("post/<int:pk>/update/", PostUpdateView.as_view(), name="post-update"),
     path("post/<int:pk>/delete/", PostDeleteAPIView.as_view(), name="post-delete"),
@@ -52,4 +48,7 @@ urlpatterns = [
     path("chat/", include("chat.urls")),
     path("add_friend/<str:username>/", views.add_friend, name="add_friend"),
     path("create_group/", views.create_group_page, name="create_group"),
+    path("search/", views.search_all, name="search"),
+    path("user_search/<str:username>", lambda request, username: redirect(f"http://localhost:3000/user/{username}/"), name="user-search-util"),
+    # path("user/<str:username>", UserPostListView.as_view(), name="user-search-util"),
 ]

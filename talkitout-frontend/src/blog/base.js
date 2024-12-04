@@ -38,14 +38,22 @@ const Header = ({ user, isAuthenticated }) => {
                 className="nav-item nav-link"
                 to="http://localhost:8000/whiteboardcollab/"
               >
-                W/B
+                W/B (⌨)
               </Link>
               {isAuthenticated && (
                 <Link
                   className="nav-item nav-link fileTransferLink"
                   to={`http://localhost:8000/stream/user/${user.username}`}
                 >
-                  File/Sh
+                  File/Sh (📂)
+                </Link>
+              )}
+              {isAuthenticated && (
+                <Link
+                  className="nav-item nav-link fileTransferLink"
+                  to={`http://localhost:8000/api/search/`}
+                >
+                  Search (🔍)
                 </Link>
               )}
             </div>
