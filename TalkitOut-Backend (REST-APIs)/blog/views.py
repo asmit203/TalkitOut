@@ -117,7 +117,7 @@ def get_users_not_friends(request):
 
     users_not_friends = User.objects.exclude(pk=current_user.id).exclude(
         pk__in=friends.values_list("friend", flat=True)
-    )
+    )[:5] #! Limit the number of users to 5 for the scalability
 
     serializer = UserNotFriendSerializer(users_not_friends, many=True)
 
