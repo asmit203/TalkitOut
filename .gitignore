@@ -169,3 +169,5 @@ media
 db.*
 
 node_modules/
+migrations/
+example/

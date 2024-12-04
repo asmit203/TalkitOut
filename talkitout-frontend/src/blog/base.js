@@ -9,7 +9,7 @@ const Header = ({ user, isAuthenticated }) => {
     <header className="site-header">
       <nav className="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div className="container">
-          <Link className="navbar-brand mr-4" to="/">
+          <Link className="navbar-brand mr-4" to="/about">
             TalkitOut
           </Link>
           <button
@@ -26,26 +26,34 @@ const Header = ({ user, isAuthenticated }) => {
           <div className="collapse navbar-collapse" id="navbarToggle">
             <div className="navbar-nav mr-auto">
               <Link className="nav-item nav-link" to="/">
-                Home
+                🏠
               </Link>
-              <Link className="nav-item nav-link" to="/about">
+              {/* <Link className="nav-item nav-link" to="/about">
                 About
-              </Link>
+              </Link> */}
               <Link className="nav-item nav-link" to="/favourites">
-                Favourites
+                Fav (❤️)
               </Link>
               <Link
                 className="nav-item nav-link"
                 to="http://localhost:8000/whiteboardcollab/"
               >
-                Whiteboard
+                W/B (⌨)
               </Link>
               {isAuthenticated && (
                 <Link
                   className="nav-item nav-link fileTransferLink"
                   to={`http://localhost:8000/stream/user/${user.username}`}
                 >
-                  File Transfer
+                  File/Sh (📂)
+                </Link>
+              )}
+              {isAuthenticated && (
+                <Link
+                  className="nav-item nav-link fileTransferLink"
+                  to={`http://localhost:8000/api/search/`}
+                >
+                  Search (🔍)
                 </Link>
               )}
             </div>

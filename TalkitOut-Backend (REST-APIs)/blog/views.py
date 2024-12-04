@@ -42,7 +42,7 @@ from rest_framework.generics import DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 import hashlib, base64
 import urllib.parse
-
+from users.models import Profile, User
 
 def home(request):
     context = {
@@ -117,7 +117,7 @@ def get_users_not_friends(request):
 
     users_not_friends = User.objects.exclude(pk=current_user.id).exclude(
         pk__in=friends.values_list("friend", flat=True)
-    )
+    )[:5] #! Limit the number of users to 5 for the scalability
 
     serializer = UserNotFriendSerializer(users_not_friends, many=True)
 
@@ -444,3 +444,20 @@ def create_group_page(request):
 def current_user(request):
     print(User.objects.get(username=request.user.username))
     return HttpResponse(request.user)
+
+
+def search_all(request):
+    if request.method == "POST":
+        #! for the post search 
+        query = request.POST.get('title', None)
+        if query:
+            results_posts = post.objects.filter(title__contains=query)
+            results_users = User.objects.filter(username__contains=query)
+            print(results_users)
+            # results_users = Profile.user.objects.filter(username__contains=query)
+            # results_posts = post.objects.filter(title__contains=query)
+            # current_user = request.user
+            # results = results.filter(streamer=current_user)
+            return render(request, 'blog/search.html',{'posts':results_posts, 'users' : results_users})
+    
+    return render(request, 'blog/search.html')
