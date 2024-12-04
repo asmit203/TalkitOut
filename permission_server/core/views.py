@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import CustomUser, Role
 from .serializers import UserSerializer
-from .permissions import IsAdminUser, IsManagerOrAdmin, ReadOnly, IsManager
+from .permissions import IsAdminUser, IsManagerOrAdmin, ReadOnly
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
